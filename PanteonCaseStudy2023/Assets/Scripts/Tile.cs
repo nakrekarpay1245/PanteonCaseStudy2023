@@ -12,8 +12,21 @@ public class Tile : MonoBehaviour
     private int y;
 
     private bool isOccupied;
-    private Building buildingOnTile;
-    private Soldier soldierOnTile;
+    private Entity entityOnTile;
+
+    public int gCost;
+    public int hCost;
+    public int fCost;
+
+    public Tile cameFromTile;
+
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     /// <summary>
     /// Returns the grid position of the tile
     /// </summary>
@@ -34,9 +47,14 @@ public class Tile : MonoBehaviour
         this.y = y;
     }
 
+    public void CalculateFCost()
+    {
+        fCost = gCost + fCost;
+    }
+
     private void Occupy()
     {
-        //Debug.Log(name + " " + x + "," + y + " is occupied!");
+        //Debug.Log(name + " " + x + "," + y + " is Occupied!");
         isOccupied = true;
     }
 
@@ -44,6 +62,7 @@ public class Tile : MonoBehaviour
     {
         //Debug.Log(name + " " + x + "," + y + " is UnOccupied!");
         isOccupied = false;
+        SetEntity(null);
     }
 
     public bool IsOccupied()
@@ -51,23 +70,19 @@ public class Tile : MonoBehaviour
         return isOccupied;
     }
 
-    public Building GetBuilding()
+    public Entity GetEntity()
     {
-        return buildingOnTile;
-    }
-    public Soldier GetSoldier()
-    {
-        return soldierOnTile;
+        return entityOnTile;
     }
 
-    public void SetBuilding(Building building)
+    public void SetEntity(Entity entity)
     {
-        buildingOnTile = building;
+        entityOnTile = entity;
         Occupy();
     }
-    public void SetSoldier(Soldier soldier)
+
+    public void SetColor(Color color)
     {
-        soldierOnTile = soldier;
-        Occupy();
+        spriteRenderer.color = color;
     }
 }

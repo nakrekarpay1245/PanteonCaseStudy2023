@@ -2,26 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public class Building : Entity
 {
-    [Header("Building Parameters")]
-    [Header("Building Informations")]
-    [Tooltip("It holds the name of the building")]
-    [SerializeField]
-    protected string buildingName;
-    [Tooltip("It holds the name of the building")]
-    [TextArea(3, 3)]
-    [SerializeField]
-    protected string buildingDescription;
-    [Tooltip("It holds the icon of the building")]
-    [SerializeField]
-    private Sprite buildingIcon;
-
-    [Header("Building Health")]
-    [Tooltip("It holds the health data of the building")]
-    [SerializeField]
-    protected float buildingHealth;
-
     [Header("Building Scale")]
     [Tooltip("Building horizontal scale")]
     [SerializeField]
@@ -30,37 +12,49 @@ public class Building : MonoBehaviour
     [SerializeField]
     protected int buildingHeight;
 
-    public List<Tile> tilesInBuilding;
-
-    public virtual void TakeDamage(float damage)
-    {
-        buildingHealth -= damage;
-    }
-
     public Vector2Int GetBuildingScale()
     {
         Vector2Int buildingScale = new Vector2Int(buildingWidth, buildingHeight);
         return buildingScale;
     }
 
-    public void SetTilesInBuilding(List<Tile> tilesInBuilding)
-    {
-        this.tilesInBuilding = tilesInBuilding;
-    }
-
     public Sprite GetBuildingIcon()
     {
-        return buildingIcon;
+        return entityIcon;
     }
 
-    private void DisplayInformation()
+    public override void DisplayInformation()
     {
-        //Debug.Log("Information Displayed!");
-        UIManager.singleton.DisplayInformation(buildingName, buildingDescription, buildingIcon);
+        base.DisplayInformation();
     }
 
-    public virtual void Select()
+    public override void Select()
     {
-        DisplayInformation();
+        base.Select();
+    }
+
+    public override void DeSelect()
+    {
+        base.DeSelect();
+    }
+
+    public override void TakeDamage(float damageAmount)
+    {
+        base.TakeDamage(damageAmount);
+    }
+
+    public override void SetTilesInEntity(List<Tile> tileList)
+    {
+        base.SetTilesInEntity(tileList);
+    }
+
+    public override List<Tile> GetTilesInEntity()
+    {
+        return base.GetTilesInEntity();
+    }
+
+    public override EntityType GetEntityType()
+    {
+        return base.GetEntityType();
     }
 }

@@ -1,23 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SoldierManager : MonoBehaviour
+public class SoldierManager : MonoSingleton<SoldierManager>
 {
-    private void Update()
-    {
-        SelectBuildings();
-    }
+    [Header("Building Manager Parameters")]
+    [Header("Building References")]
+    [Tooltip("The target building to attack")]
+    [SerializeField]
+    private Building targetBuilding;
 
-    public void SelectBuildings()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Soldier selectedSoldier = SelectionManager.singleton.GetNearestTile(mousePosition).GetSoldier();
-
-            selectedSoldier?.Select();
-        }
-    }
 }

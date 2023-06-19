@@ -45,13 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d6f12d605ff3d4ba2a2f6d4e54b8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: BARRACK
-  buildingDescription: This building produces soldiers
-  buildingIcon: {fileID: 21300000, guid: 2ab70dca388b09548aed2ad250ec1d95, type: 3}
-  buildingHealth: 100
+  entityType: 3
+  entityName: BARRACK
+  entityDescription: This building serves to produce soldiers, and its health is
+    100
+  entityIcon: {fileID: 21300000, guid: 2ab70dca388b09548aed2ad250ec1d95, type: 3}
+  entityHealth: 100
+  tilesInEntity: []
   buildingWidth: 4
   buildingHeight: 4
-  tilesInBuilding: []
   soldierPrefab: {fileID: 2029409167653613507, guid: 669a6fc3c1f465849b10f433fb613f94, type: 3}
 --- !u!1 &4355783100719950877
 GameObject:

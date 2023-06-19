@@ -8,4 +8,9 @@ public class PowerPlant : Building
     {
         base.TakeDamage(damage);
     }
+    public override void Select()
+    {
+        base.Select();
+        Debug.Log("Power Plant Selected!");
+    }
 }

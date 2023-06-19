@@ -129,10 +129,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bf30a28851e0c4cbcea018afb99a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: PowerPlant
-  buildingDescription: This building is currently not serving any purpose
-  buildingIcon: {fileID: 21300000, guid: 74b93adb60794d1499355d1108e47f52, type: 3}
-  buildingHealth: 50
+  entityType: 4
+  entityName: POWER PLANT
+  entityDescription: This building serves for energy production, and its health is
+    50
+  entityIcon: {fileID: 21300000, guid: 74b93adb60794d1499355d1108e47f52, type: 3}
+  entityHealth: 50
+  tilesInEntity: []
   buildingWidth: 3
   buildingHeight: 2
-  tilesInBuilding: []

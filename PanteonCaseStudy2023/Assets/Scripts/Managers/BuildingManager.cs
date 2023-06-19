@@ -9,6 +9,7 @@ public class BuildingManager : MonoBehaviour
     [Tooltip("The barrack object that will create")]
     [SerializeField]
     private Building barrackPrefab;
+
     [Tooltip("The power plant object that will create")]
     [SerializeField]
     private Building powerPlantPrefab;
@@ -16,23 +17,10 @@ public class BuildingManager : MonoBehaviour
     private Building selectedBuilding;
 
     private Action buildAction;
-    private Action selectionAction;
+
     private void Update()
     {
         buildAction?.Invoke();
-        selectionAction?.Invoke();
-    }
-
-    public void SelectBuildings()
-    {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        //    Building selectedBuilding = SelectionManager.singleton.GetNearestTile(mousePosition).GetBuilding();
-
-        //    selectedBuilding?.Select();
-        //}
     }
 
     public void BuildProces()
@@ -40,7 +28,7 @@ public class BuildingManager : MonoBehaviour
         DynamicCursor.singleton.Display(selectedBuilding);
 
         Tile nearestTile =
-            SelectionManager.singleton.GetNearestTile(DynamicCursor.singleton.transform.position);
+            TileManager.singleton.GetNearestTile(DynamicCursor.singleton.transform.position);
 
         if (IsBuildingCanBePlaced(nearestTile, selectedBuilding))
         {
@@ -48,15 +36,15 @@ public class BuildingManager : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Building currentBuilding = Instantiate(selectedBuilding, nearestTile.transform.position,
-                    Quaternion.identity, nearestTile.transform);
+                Building currentBuilding = Factory.singleton.CreateEntity(selectedBuilding.GetEntityType(),
+                    nearestTile.transform.position, Quaternion.identity,
+                        nearestTile.transform).GetComponent<Building>();
 
-                currentBuilding.SetTilesInBuilding(GetTilesInBuilding(nearestTile, currentBuilding));
+                currentBuilding.SetTilesInEntity(GetTilesInBuilding(nearestTile, currentBuilding));
 
                 foreach (var tile in GetTilesInBuilding(nearestTile, currentBuilding))
                 {
-                    //tile.Occupy();
-                    tile.SetBuilding(currentBuilding);
+                    tile.SetEntity(currentBuilding);
                 }
 
                 selectedBuilding = null;
@@ -65,7 +53,19 @@ public class BuildingManager : MonoBehaviour
                 DynamicCursor.singleton.Hide();
 
                 buildAction -= BuildProces;
-                selectionAction += SelectBuildings;
+            }
+        }
+        else
+        {
+            DynamicCursor.singleton.CanNotPlaceable();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                selectedBuilding = null;
+
+                DynamicCursor.singleton.Hide();
+
+                buildAction -= BuildProces;
             }
         }
     }
@@ -74,14 +74,12 @@ public class BuildingManager : MonoBehaviour
     {
         selectedBuilding = barrackPrefab;
         buildAction += BuildProces;
-        selectionAction -= SelectBuildings;
     }
 
     public void SelectPowerPlant()
     {
         selectedBuilding = powerPlantPrefab;
         buildAction += BuildProces;
-        selectionAction -= SelectBuildings;
     }
 
     private bool IsBuildingCanBePlaced(Tile tile, Building building)
@@ -96,7 +94,6 @@ public class BuildingManager : MonoBehaviour
         for (int i = 0; i < tilesInBuilding.Count; i++)
         {
             Tile t = tilesInBuilding[i];
-
             if (t.IsOccupied())
             {
                 return false;

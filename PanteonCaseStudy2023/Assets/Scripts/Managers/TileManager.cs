@@ -27,6 +27,9 @@ public class TileManager : MonoSingleton<TileManager>
     [HideInInspector]
     public List<Tile> activeTileList;
 
+    private Vector2 searchingPosition;
+    private Tile nearestTile;
+
     private void Awake()
     {
         tileGrid = new Tile[gridWidth, gridHeight];
@@ -53,6 +56,55 @@ public class TileManager : MonoSingleton<TileManager>
                 activeTileList.Add(generatedTile);
             }
         }
+    }
+
+    public Tile GetNearestTile(Vector2 position)
+    {
+        searchingPosition = position;
+
+        float nearestDistance = float.MaxValue;
+
+        for (int i = 0; i < GetActiveTileList().Count; i++)
+        {
+            Tile tile = GetActiveTileList()[i];
+
+            float distance = Vector2.Distance(tile.transform.position, searchingPosition);
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestTile = tile;
+            }
+        }
+
+        return nearestTile;
+    }
+
+    public Tile GetNearestUnOccupiedTile(Vector2 position)
+    {
+        searchingPosition = position;
+
+        float nearestDistance = float.MaxValue;
+
+        for (int i = 0; i < GetActiveTileList().Count; i++)
+        {
+            Tile tile = GetActiveTileList()[i];
+
+            if (tile.IsOccupied())
+            {
+                continue;
+            }
+
+            float distance = Vector2.Distance(tile.transform.position, searchingPosition);
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestTile = tile;
+            }
+        }
+
+        return nearestTile;
     }
 
     public List<Tile> GetActiveTileList()

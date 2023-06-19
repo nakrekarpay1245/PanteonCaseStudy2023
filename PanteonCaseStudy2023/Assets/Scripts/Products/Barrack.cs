@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,25 +9,20 @@ public class Barrack : Building
     [SerializeField]
     private Soldier soldierPrefab;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ProduceSoldier();
-        }
-    }
-
     public void ProduceSoldier()
     {
+        //Debug.Log(name + " Produce soldier!");
+
         Tile nearestTile =
-            SelectionManager.singleton.GetNearestUnOccupiedTile(tilesInBuilding[0].transform.localPosition);
+            TileManager.singleton.GetNearestUnOccupiedTile(tilesInEntity[0].transform.localPosition);
 
-        Soldier generatedSoldier = Instantiate(soldierPrefab, nearestTile.transform);
+        Soldier generatedSoldier = Factory.singleton.CreateEntity(EntityType.Soldier1,
+            nearestTile.transform.position, Quaternion.identity,
+                nearestTile.transform).GetComponent<Soldier>();
 
-        generatedSoldier.transform.localPosition = Vector3.zero;
+        generatedSoldier.SetTilesInEntity(new List<Tile> { nearestTile });
 
-        //nearestTile.Occupy();
-        nearestTile.SetSoldier(generatedSoldier);
+        nearestTile.SetEntity(generatedSoldier);
     }
 
     public override void TakeDamage(float damage)
@@ -39,6 +33,18 @@ public class Barrack : Building
     public override void Select()
     {
         base.Select();
-        UIManager.singleton.DisplaySoldiers();
+        UIManager.singleton.AddBarrackToButton(this);
+        UIManager.singleton.DisplaySoldierButtons();
+        UIManager.singleton.HideBuildingButtons();
+    }
+
+    public override void DeSelect()
+    {
+        base.DeSelect();
+    }
+
+    public override void DisplayInformation()
+    {
+        base.DisplayInformation();
     }
 }

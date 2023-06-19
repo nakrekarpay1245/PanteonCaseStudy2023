@@ -1,58 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectionManager : MonoSingleton<SelectionManager>
 {
-    private Vector2 searchingPosition;
-    private Tile nearestTile;
+    [Header("Selection Manager Parameters")]
+    [Tooltip("Entity that the mouse has clicked")]
+    public IEntity selectedEntity;
 
-    public Tile GetNearestTile(Vector2 position)
+    [Header("Mouse Position Clamps")]
+    [Tooltip("The maximum horizontal point where the mouse should be present for selection")]
+    [SerializeField]
+    private int maximumHorizontalMouseSelectionPosition = 5;
+    [Tooltip("The maximum vertical point where the mouse should be present for selection")]
+    [SerializeField]
+    private int maximumVerticalMouseSelectionPosition = 5;
+
+    private void Update()
     {
-        searchingPosition = position;
-
-        float nearestDistance = float.MaxValue;
-
-        for (int i = 0; i < TileManager.singleton.GetActiveTileList().Count; i++)
-        {
-            Tile tile = TileManager.singleton.GetActiveTileList()[i];
-
-            float distance = Vector2.Distance(tile.transform.position, searchingPosition);
-
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestTile = tile;
-            }
-        }
-
-        return nearestTile;
+        SelectEntity();
     }
 
-    public Tile GetNearestUnOccupiedTile(Vector2 position)
+    public void SelectEntity()
     {
-        searchingPosition = position;
-
-        float nearestDistance = float.MaxValue;
-
-        for (int i = 0; i < TileManager.singleton.GetActiveTileList().Count; i++)
+        if (Input.GetMouseButtonDown(0))
         {
-            Tile tile = TileManager.singleton.GetActiveTileList()[i];
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (tile.IsOccupied())
+            if (mousePosition.x < maximumHorizontalMouseSelectionPosition &&
+                mousePosition.x > -maximumHorizontalMouseSelectionPosition &&
+                mousePosition.y < maximumVerticalMouseSelectionPosition &&
+                mousePosition.y > -maximumVerticalMouseSelectionPosition)
             {
-                continue;
-            }
+                Tile nearestTile = TileManager.singleton.GetNearestTile(mousePosition);
 
-            float distance = Vector2.Distance(tile.transform.position, searchingPosition);
+                if (!nearestTile.IsOccupied() || !nearestTile)
+                {
+                    //Debug.Log("Nearest Tile is not occupied!");
+                    UIManager.singleton.HideSoldierButtons();
+                    UIManager.singleton.DisplayBuildingButtons();
+                    UIManager.singleton.HideInformationMenu();
+                    selectedEntity = null;
+                    return;
+                }
 
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestTile = tile;
+                selectedEntity = nearestTile.GetEntity();
+
+                if (selectedEntity != null)
+                {
+                    selectedEntity.Select();
+                }
+                else
+                {
+                    //Debug.Log("There is no selected Entity!");
+                    UIManager.singleton.HideSoldierButtons();
+                    UIManager.singleton.DisplayBuildingButtons();
+                    UIManager.singleton.HideInformationMenu();
+                    selectedEntity = null;
+                    return;
+                }
             }
         }
-
-        return nearestTile;
     }
 }
