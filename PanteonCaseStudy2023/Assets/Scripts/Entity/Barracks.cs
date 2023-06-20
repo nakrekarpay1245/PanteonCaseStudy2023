@@ -13,6 +13,11 @@ public class Barracks : Building
         Tile nearestTile =
             TileManager.singleton.GetNearestUnOccupiedTile(tilesInEntity[0].transform.localPosition);
 
+        if (!nearestTile)
+        {
+            return;
+
+        }
         Soldier generatedSoldier = Factory.singleton.CreateEntity(entityPrefab.entityType,
             transform.position, Quaternion.identity, nearestTile.transform).GetComponent<Soldier>();
 

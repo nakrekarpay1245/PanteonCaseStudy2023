@@ -25,6 +25,11 @@ public class DynamicCursor : MonoSingleton<DynamicCursor>
         spriteRendererComponent = GetComponentInChildren<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        Hide();
+    }
+
     private void Update()
     {
         workingAction?.Invoke();

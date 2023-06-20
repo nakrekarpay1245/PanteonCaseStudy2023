@@ -220,7 +220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonComponent: {fileID: 0}
-  barrack: {fileID: 0}
   entityPrefab:
     entityType: 2
     entityPrefab: {fileID: 2029409167653613507, guid: acc4e46e7cb86404583bc6cb0e23252b, type: 3}
@@ -375,7 +374,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonComponent: {fileID: 0}
-  barrack: {fileID: 0}
   entityPrefab:
     entityType: 1
     entityPrefab: {fileID: 2029409167653613507, guid: 80a4be8dc90ac864689bdf6676b09fc8, type: 3}
@@ -1195,7 +1193,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonComponent: {fileID: 0}
-  barrack: {fileID: 0}
   entityPrefab:
     entityType: 0
     entityPrefab: {fileID: 2029409167653613507, guid: 669a6fc3c1f465849b10f433fb613f94, type: 3}
