@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [Header("Tile Parameters")]
-    [Header("Grid Position Parameters")]
-    [Tooltip("Tile horizontal position on grid")]
     [SerializeField]
     private int x;
-    [Tooltip("Tile vertical position on grid")]
     [SerializeField]
     private int y;
 
@@ -28,59 +24,83 @@ public class Tile : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the grid position of the tile
+    /// Gets the grid position of the tile.
     /// </summary>
-    /// <returns>The grid position as a Vector2</returns>
+    /// <returns>The grid position of the tile.</returns>
     public Vector2Int GetTileGridPosition()
     {
-        Vector2Int tileGridPosition = new Vector2Int(x, y);
-        return tileGridPosition;
+        return new Vector2Int(x, y);
     }
 
     /// <summary>
-    /// Returns the grid position of the tile
+    /// Sets the grid position of the tile.
     /// </summary>
-    /// <returns>The grid position as a Vector2</returns>
+    /// <param name="x">The x-coordinate of the grid position.</param>
+    /// <param name="y">The y-coordinate of the grid position.</param>
     public void SetTileGridPosition(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
 
+    /// <summary>
+    /// Calculates the F cost of the tile.
+    /// </summary>
     public void CalculateFCost()
     {
-        fCost = gCost + fCost;
+        fCost = gCost + hCost;
     }
 
-    private void Occupy()
+    /// <summary>
+    /// Occupies the tile.
+    /// </summary>
+    public void Occupy()
     {
-        //Debug.Log(name + " " + x + "," + y + " is Occupied!");
         isOccupied = true;
+        SetColor(Color.red);
     }
 
+    /// <summary>
+    /// Unoccupies the tile.
+    /// </summary>
     public void UnOccupy()
     {
-        //Debug.Log(name + " " + x + "," + y + " is UnOccupied!");
         isOccupied = false;
         SetEntity(null);
+        SetColor(Color.white);
     }
 
+    /// <summary>
+    /// Checks if the tile is occupied.
+    /// </summary>
+    /// <returns>True if the tile is occupied, false otherwise.</returns>
     public bool IsOccupied()
     {
         return isOccupied;
     }
 
+    /// <summary>
+    /// Gets the entity on the tile.
+    /// </summary>
+    /// <returns>The entity on the tile.</returns>
     public Entity GetEntity()
     {
         return entityOnTile;
     }
 
+    /// <summary>
+    /// Sets the entity on the tile.
+    /// </summary>
+    /// <param name="entity">The entity to set on the tile.</param>
     public void SetEntity(Entity entity)
     {
         entityOnTile = entity;
-        Occupy();
     }
 
+    /// <summary>
+    /// Sets the color of the tile.
+    /// </summary>
+    /// <param name="color">The color to set.</param>
     public void SetColor(Color color)
     {
         spriteRenderer.color = color;

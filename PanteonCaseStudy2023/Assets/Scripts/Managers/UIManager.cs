@@ -1,41 +1,45 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
 
 public class UIManager : MonoSingleton<UIManager>
 {
     [Header("UI Manager Parameters")]
     [Header("Information Parameters")]
-    [Tooltip("It displays the information of the selected product")]
+    [Tooltip("Displays the information of the selected product")]
     [SerializeField]
     private GameObject informationMenu;
-    [Tooltip("It displays the information of the selected product")]
+    [Tooltip("Displays the name of the selected product")]
     [SerializeField]
     private TextMeshProUGUI productNameText;
-    [Tooltip("It displays the information of the selected product")]
+    [Tooltip("Displays the descriptions of the selected product")]
     [SerializeField]
     private TextMeshProUGUI productDescriptionText;
-    [Tooltip("It displays the information of the selected product")]
+    [Tooltip("Displays the icon of the selected product")]
     [SerializeField]
     private Image productIcon;
 
     [Header("Production Parameters")]
-    [Tooltip("It displays the products of the selected product")]
+    [Tooltip("Menu displaying producible items.")]
     [SerializeField]
     private GameObject productionMenu;
-    [Tooltip("It displays the buildings that can be produced")]
+    [Tooltip("Menu displaying producible buildings.")]
     [SerializeField]
     private GameObject buildingProduceMenu;
-    [Tooltip("It displays the soldiers that the selected barracks can produce")]
+    [Tooltip("Menu displaying producible soldiers.")]
     [SerializeField]
     private GameObject soldierProduceMenu;
-    [Tooltip("It displays the soldiers that the selected barracks can produce")]
+    [Tooltip("Button producing selected soldiers.")]
     [SerializeField]
-    private List<SoldierButton> produceSoldierButtonList;
+    private List<SoldierButton> soldierButtons;
 
+    /// <summary>
+    /// Displays the information menu with the specified name, description, and icon.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <param name="icon"></param>
     public void DisplayInformationMenu(string name, string description, Sprite icon)
     {
         informationMenu.SetActive(true);
@@ -43,50 +47,69 @@ public class UIManager : MonoSingleton<UIManager>
         productDescriptionText.text = description;
         productIcon.sprite = icon;
     }
+
+    /// <summary>
+    /// Hides the information menu.
+    /// </summary>
     public void HideInformationMenu()
     {
-        //Debug.Log("Information Menu Hided!");
         informationMenu.SetActive(false);
     }
 
-
+    /// <summary>
+    /// Displays soldier produce buttons
+    /// </summary>
     public void DisplaySoldierButtons()
     {
-        //Debug.Log("Soldiers Displayed!");
         soldierProduceMenu.SetActive(true);
     }
 
+    /// <summary>
+    /// Hides soldier produce buttons
+    /// </summary>
     public void HideSoldierButtons()
     {
-        //Debug.Log("Soldiers Hided!");
         soldierProduceMenu.SetActive(false);
-        RemoveBarrackToButton();
+        RemoveBarrackFromButtons();
     }
 
-    public void AddBarrackToButton(Barrack barrack)
+    /// <summary>
+    /// Adds barracks to soldier produce buttons
+    /// </summary>
+    public void AddBarrackToButtons(Barracks barrack)
     {
-        foreach (SoldierButton produceSoldierButton in produceSoldierButtonList)
+        for (int i = 0; i < soldierButtons.Count; i++)
         {
-            produceSoldierButton.SetBarrack(barrack);
+            SoldierButton button = soldierButtons[i];
+            button.SetBarrack(barrack);
         }
     }
 
-    public void RemoveBarrackToButton()
+    /// <summary>
+    /// Removes barracks to soldier produce buttons
+    /// </summary>
+    public void RemoveBarrackFromButtons()
     {
-        foreach (SoldierButton produceSoldierButton in produceSoldierButtonList)
+        for (int i = 0; i < soldierButtons.Count; i++)
         {
-            produceSoldierButton.SetBarrack(null);
+            SoldierButton button = soldierButtons[i];
+            button.SetBarrack(null);
         }
     }
 
+    /// <summary>
+    /// Displays building produce buttons
+    /// </summary>
     public void DisplayBuildingButtons()
     {
-        //Debug.Log("Buildings Displayed!");
         buildingProduceMenu.SetActive(true);
     }
+
+    /// <summary>
+    /// Hides building produce buttons
+    /// </summary>
     public void HideBuildingButtons()
     {
-        //Debug.Log("Buildings Hided!");
         buildingProduceMenu.SetActive(false);
     }
 }

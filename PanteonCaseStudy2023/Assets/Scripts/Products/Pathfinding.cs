@@ -1,45 +1,35 @@
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pathfinding : MonoSingleton<Pathfinding>
 {
-    private const int straightMoveCost = 10;
-    private const int diagonalMoveCost = 14;
+    private const int StraightMoveCost = 10;
+    private const int DiagonalMoveCost = 14;
 
-    //public List<Vector2> GetPathVectorList(Tile startTile, Tile endTile)
-    //{
-    //    List<Tile> path = FindPath(startTile, endTile);
-
-    //    List<Vector2> pathVectors = new List<Vector2>();
-
-    //    if (path != null)
-    //    {
-    //        for (int i = 0; i < path.Count; i++)
-    //        {
-    //            Tile tile = path[i];
-
-    //            pathVectors.Add(tile.transform.position);
-    //        }
-
-    //        return pathVectors;
-    //    }
-
-    //    return null;
-    //}
-
+    /// <summary>
+    /// This function implements the A* algorithm to find a path between two tiles and
+    /// returns the path as a list of tiles.
+    /// </summary>
+    /// <param name="startTile"></param>
+    /// <param name="endTile"></param>
+    /// <returns></returns>
     public List<Tile> FindPath(Tile startTile, Tile endTile)
     {
         List<Tile> openList = new List<Tile>() { startTile };
-        List<Tile> closeList = new List<Tile>();
+        List<Tile> closedList = new List<Tile>();
 
         int gridWidth = TileManager.singleton.GetTileGrid().GetLength(0);
         int gridHeight = TileManager.singleton.GetTileGrid().GetLength(1);
+
+        Tile[,] tileGrid = TileManager.singleton.GetTileGrid();
 
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                Tile tile = TileManager.singleton.GetTileGrid()[x, y];
+                Tile tile = tileGrid[x, y];
 
                 tile.gCost = int.MaxValue;
 
@@ -65,26 +55,31 @@ public class Pathfinding : MonoSingleton<Pathfinding>
             }
 
             openList.Remove(currentTile);
-            closeList.Add(currentTile);
+            closedList.Add(currentTile);
 
-            foreach (Tile neighbourTile in GetNeighbourTileList(currentTile))
+            List<Tile> neighborTileList = GetNeighbourTileList(currentTile);
+            int neighborCount = neighborTileList.Count;
+
+            for (int i = 0; i < neighborCount; i++)
             {
-                if (closeList.Contains(neighbourTile))
+                Tile neighborTile = neighborTileList[i];
+
+                if (closedList.Contains(neighborTile))
                 {
                     continue;
                 }
 
-                int tentativeGCost = currentTile.gCost + CalculateDistanceCost(currentTile, neighbourTile);
-                if (tentativeGCost < neighbourTile.gCost)
+                int tentativeGCost = currentTile.gCost + CalculateDistanceCost(currentTile, neighborTile);
+                if (tentativeGCost < neighborTile.gCost)
                 {
-                    neighbourTile.cameFromTile = currentTile;
-                    neighbourTile.gCost = tentativeGCost;
-                    neighbourTile.hCost = CalculateDistanceCost(neighbourTile, endTile);
-                    neighbourTile.CalculateFCost();
+                    neighborTile.cameFromTile = currentTile;
+                    neighborTile.gCost = tentativeGCost;
+                    neighborTile.hCost = CalculateDistanceCost(neighborTile, endTile);
+                    neighborTile.CalculateFCost();
 
-                    if (!openList.Contains(neighbourTile))
+                    if (!openList.Contains(neighborTile))
                     {
-                        openList.Add(neighbourTile);
+                        openList.Add(neighborTile);
                     }
                 }
             }
@@ -93,6 +88,12 @@ public class Pathfinding : MonoSingleton<Pathfinding>
         return null;
     }
 
+    /// <summary>
+    /// This function calculates and returns the path by traversing the cameFromTile references
+    /// from the end tile to the start tile in reverse order.
+    /// </summary>
+    /// <param name="endTile"></param>
+    /// <returns></returns>
     private List<Tile> CalculatePath(Tile endTile)
     {
         List<Tile> path = new List<Tile>();
@@ -109,6 +110,12 @@ public class Pathfinding : MonoSingleton<Pathfinding>
         return path;
     }
 
+    /// <summary>
+    /// This function returns a list of neighboring tiles around a given tile that are within 
+    /// the valid grid bounds, exist in the tile grid, and are unoccupied.
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <returns></returns>
     public List<Tile> GetNeighbourTileList(Tile tile)
     {
         int x = tile.GetTileGridPosition().x;
@@ -140,6 +147,11 @@ public class Pathfinding : MonoSingleton<Pathfinding>
         return neighborTileList;
     }
 
+    /// <summary>
+    /// This function returns the tile with the lowest F-cost from a given list of tiles.
+    /// </summary>
+    /// <param name="tileList"></param>
+    /// <returns></returns>
     private Tile GetLowestFCostTile(List<Tile> tileList)
     {
         Tile lowestFCostTile = tileList[0];
@@ -155,6 +167,13 @@ public class Pathfinding : MonoSingleton<Pathfinding>
         return lowestFCostTile;
     }
 
+    /// <summary>
+    ///  This function calculates the distance cost between two tiles based on their grid positions,
+    ///  taking into account diagonal and straight movements.
+    /// </summary>
+    /// <param name="tileA"></param>
+    /// <param name="tileB"></param>
+    /// <returns></returns>
     public int CalculateDistanceCost(Tile tileA, Tile tileB)
     {
         int aX = tileA.GetTileGridPosition().x;
@@ -168,6 +187,6 @@ public class Pathfinding : MonoSingleton<Pathfinding>
 
         int remaining = Mathf.Abs(distanceX - distanceY);
 
-        return (Mathf.Min(distanceX, distanceY) * diagonalMoveCost) + (remaining * straightMoveCost);
+        return (Mathf.Min(distanceX, distanceY) * DiagonalMoveCost) + (remaining * StraightMoveCost);
     }
 }

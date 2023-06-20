@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PowerPlant : Building
+public class House : Building
 {
     public override void DisplayInformation()
     {

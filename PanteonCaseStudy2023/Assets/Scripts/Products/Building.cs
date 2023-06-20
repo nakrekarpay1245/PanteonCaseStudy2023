@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,11 +30,6 @@ public class Building : Entity
     public override void Select()
     {
         base.Select();
-    }
-
-    public override void DeSelect()
-    {
-        base.DeSelect();
     }
 
     public override void TakeDamage(float damageAmount)

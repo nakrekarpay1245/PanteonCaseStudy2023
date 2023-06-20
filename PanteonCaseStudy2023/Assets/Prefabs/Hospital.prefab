@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1511548450743058936}
   - component: {fileID: 1511548450743058939}
   m_Layer: 0
-  m_Name: PowerPlant
+  m_Name: Hospital
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511548450743058937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.325, y: 0.175, z: 0}
+  m_LocalPosition: {x: 0.65, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 20
-  m_Sprite: {fileID: -926323805, guid: d509b116f2157f642801d76c3bd3f3d9, type: 3}
+  m_Sprite: {fileID: 151115173, guid: d509b116f2157f642801d76c3bd3f3d9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,9 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1511548451425594371}
-  - component: {fileID: 1511548451425594374}
+  - component: {fileID: 8772417371431234275}
   m_Layer: 0
-  m_Name: PowerPlant
+  m_Name: Hospital
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1511548451425594374
+--- !u!114 &8772417371431234275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,15 +126,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1511548451425594369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68bf30a28851e0c4cbcea018afb99a9f, type: 3}
+  m_Script: {fileID: 11500000, guid: cb6ef7ef046276142bbadc2e5770adcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 4
-  entityName: POWER PLANT
-  entityDescription: This building serves for energy production, and its health is
-    50
-  entityIcon: {fileID: -926323805, guid: d509b116f2157f642801d76c3bd3f3d9, type: 3}
-  entityHealth: 50
+  entityType: 6
+  entityName: HOSPITAL
+  entityDescription: A building where people can access healthcare services
+  entityIcon: {fileID: 151115173, guid: d509b116f2157f642801d76c3bd3f3d9, type: 3}
+  entityHealth: 125
   tilesInEntity: []
-  buildingWidth: 3
-  buildingHeight: 2
+  buildingWidth: 5
+  buildingHeight: 5

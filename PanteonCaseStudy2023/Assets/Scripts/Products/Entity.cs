@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour, IEntity
     protected string entityName;
 
     [Tooltip("It holds the description of this entity")]
-    [TextArea(3, 3)]
+    [TextArea(5, 10)]
     [SerializeField]
     protected string entityDescription;
 
@@ -27,7 +27,7 @@ public class Entity : MonoBehaviour, IEntity
     [Header("Health")]
     [Tooltip("It holds the health data of this entity")]
     [SerializeField]
-    protected float entityHealth;    
+    protected float entityHealth;
 
     public List<Tile> tilesInEntity;
 
@@ -38,9 +38,14 @@ public class Entity : MonoBehaviour, IEntity
         UIManager.singleton.DisplayInformationMenu(entityName, entityDescription, entityIcon);
     }
 
-    public virtual void DeSelect()
+    public virtual void Dead()
     {
-
+        for (int i = 0; i < tilesInEntity.Count; i++)
+        {
+            tilesInEntity[i].SetEntity(null);
+            tilesInEntity[i].UnOccupy();
+        }
+        Destroy(gameObject);
     }
 
     public virtual void Select()
@@ -52,9 +57,14 @@ public class Entity : MonoBehaviour, IEntity
 
     public virtual void TakeDamage(float damageAmount)
     {
-        //Debug.Log(entityName + " taked damage!");
-
         entityHealth -= damageAmount;
+
+        if (entityHealth <= 0)
+        {
+            entityHealth = 0;
+            Dead();
+            return;
+        }
     }
 
     public virtual void SetTilesInEntity(List<Tile> tileList)
