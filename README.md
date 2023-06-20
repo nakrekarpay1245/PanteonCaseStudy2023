@@ -11,6 +11,13 @@ Ayrıca, değişken, sınıf ve fonksiyon isimlendirmelerine de büyük bir öze
 
 Bir oyun geliştiricisi olarak, hem kodun performansını artırmak hem de okunabilirliğini sağlamak benim için büyük bir öneme sahiptir. Bu nedenle, yazdığım kodlarda disiplinli ve düzenli bir yaklaşım benimseyerek, en iyi uygulamaları kullanmaya özen gösteriyorum.
 
+## Benimle İlgili Faydalı Linkler
+Web Sayfam: https://erkanyaprak.w3spaces.com/index.html
+LinkedIn Hesabım: https://www.linkedin.com/in/erkanyaprak/
+Projelerim: https://erkanyaprak.itch.io/
+Projelerim (Alternatif Link): https://erkanyaprak.w3spaces.com/games.html
+Mail Adresim: rknyprk79@gmail.com
+
 ## Nasıl Katkıda Bulunulur
 
 Eğer projemize katkıda bulunmak isterseniz, aşağıdaki adımları izleyebilirsiniz:
